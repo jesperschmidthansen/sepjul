@@ -2,7 +2,8 @@ module sep
 
 using Libdl
 
-lib = dlopen("./libseptojul.so")
+strpath="/home/jschmidt/software/sepjul/module/libseptojul.so"
+lib = dlopen(strpath)
 
 function Init(xyzfile)
 
@@ -28,9 +29,9 @@ function ForceLJ(types, params)
 
 end
 
-function Integrate()
+function LeapFrog()
 
-    ccall(dlsym(lib, "sepIntegrate"), Cvoid, ())
+    ccall(dlsym(lib, "sepLeapFrog"), Cvoid, ())
 
 end
 

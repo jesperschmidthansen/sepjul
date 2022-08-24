@@ -58,8 +58,8 @@ void sepForceLJ(char *types, double *params){
   sep_force_lj(atoms, types, params, &sys, &ret, SEP_ALL);
 
 }
-
-void sepIntegrate(void){
+     
+void sepLeapFrog(void){
 
   sep_leapfrog(atoms, &sys, &ret);
 
