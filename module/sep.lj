@@ -1,0 +1,55 @@
+module sep
+
+using Libdl
+
+lib = dlopen("./libseptojul.so")
+
+function Init(xyzfile)
+
+    ccall(dlsym(lib, "sepInit"), Cvoid, (Cstring,), xyzfile)
+
+end
+
+function Close()
+
+    ccall(dlsym(lib, "sepClear"), Cvoid, ())
+
+end
+
+function Reset()
+
+    ccall(dlsym(lib, "sepReset"), Cvoid, ())
+
+end
+
+function ForceLJ(types, params)
+
+    ccall(dlsym(lib, "sepForceLJ"), Cvoid, (Cstring, Ptr{Cdouble}), types, params)
+
+end
+
+function Integrate()
+
+    ccall(dlsym(lib, "sepIntegrate"), Cvoid, ())
+
+end
+
+function Save(filename)
+
+    ccall(dlsym(lib, "sepSave"), Cvoid, (Cstring,), filename)
+
+end
+
+function GetEnergies()
+
+    retval = zeros(2);
+	 
+    ccall(dlsym(lib, "sepGetEnergies"), Cvoid, (Ptr{Cdouble},), retval);
+
+    epot = retval[1];
+    ekin = retval[2];
+    
+    return epot, ekin
+end
+
+end
