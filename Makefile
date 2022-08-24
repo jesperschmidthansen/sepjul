@@ -12,8 +12,8 @@ OBJECTS     =  sepmisc.o seputil.o separray.o sepinit.o sepprfrc.o sepintgr.o \
 
 
 # Shared object 
-libseptojul.so:src/septojul.c libsep.a
-	gcc $(WARN) $(OPTIM) -fopenmp -fPIC -shared *.o src/septojul.c -o libseptojul.so
+libseptojul.so:module/septojul.c libsep.a
+	gcc $(WARN) $(OPTIM) -fopenmp -fPIC -shared *.o module/septojul.c -o module/libseptojul.so
 
 # Building library
 libsep.a: $(OBJECTS)
