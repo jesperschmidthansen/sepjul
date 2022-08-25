@@ -118,9 +118,9 @@ void sepLeapFrog(void){
 
 }
 
-void sepSave(char *xyzfile){
+void sepSave(char *xyzfile, char *types){
   
-  sep_save_xyz(atoms, "A", xyzfile, "w", sys);
+  sep_save_xyz(atoms, types, xyzfile, "w", sys);
 
 }
 
@@ -172,7 +172,7 @@ void sepRelaxTemp(char type, double Td, double tau){
 
 void sepSetExclusionRule(char *type){
 
-  if ( strcmp(type, "bond")==0 ) 
+  if ( strcmp(type, "bonds")==0 ) 
     exclusionrule = SEP_EXCL_BONDED;
   else if ( strcmp(type, "molecule")==0 )
     exclusionrule = SEP_EXCL_SAME_MOL;
@@ -197,3 +197,8 @@ void sepSetOMP(int nthreads){
 }
 
 
+void sepCompress(double desiredRho, double xi){
+
+  sep_compress_box(atoms, desiredRho, xi, &sys);
+  
+}

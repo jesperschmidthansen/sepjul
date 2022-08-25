@@ -41,7 +41,7 @@ end
 
 function ForceBondHarmonic(btype, blength, bconstant)
 
-    ccall(dlsym(lib, "sepBondHarmonic"), Cvoid, (Cint, Cdouble, Cdouble),
+    ccall(dlsym(lib, "sepForceBondHarmonic"), Cvoid, (Cint, Cdouble, Cdouble),
           btype, blength, bconstant)
  
 end
@@ -81,9 +81,9 @@ function RelaxTemp(type, desiredTemp, tau)
 end
 
 # Save
-function Save(filename)
+function Save(filename, types)
 
-    ccall(dlsym(lib, "sepSave"), Cvoid, (Cstring,), filename)
+    ccall(dlsym(lib, "sepSave"), Cvoid, (Cstring, Cstring), filename, types)
 
 end
 
@@ -143,7 +143,7 @@ function GetMasses()
     
     m = zeros(npart)
     
-    ccall(dlsym(lib, "sepGetMasses"), Cvoid, (Ptr{Cdouble}), m)
+    ccall(dlsym(lib, "sepGetMasses"), Cvoid, (Ptr{Cdouble},), m)
     
     return m
 end
@@ -155,7 +155,7 @@ function GetCharges()
     
     z = zeros(npart)
     
-    ccall(dlsym(lib, "sepGetCharges"), Cvoid, (Ptr{Cdouble}), z)
+    ccall(dlsym(lib, "sepGetCharges"), Cvoid, (Ptr{Cdouble},), z)
     
     return z
 end
@@ -170,20 +170,27 @@ function SetTypes(types)
         error("Length of type arrey not correct")
     end
     
-    ccall(dlsym(lib, "sepSetTypes"), Cvoid, (Ptr{Cchar}), types)
+    ccall(dlsym(lib, "sepSetTypes"), Cvoid, (Ptr{Cchar},), types)
     
 end
 
 function SetExclusionRule(rule)
 
-    ccall(dlsym(lib, "sepSetExclusionRule"), Cvoid, (Ptr{Cchar}), rule)
+    ccall(dlsym(lib, "sepSetExclusionRule"), Cvoid, (Ptr{Cchar},), rule)
     
 end
 
 function SetOMP(nthreads)
 
-    ccall(dlsym(lib, "sepSetOMP"), Cvoid, (Cint), nthreads)
+    ccall(dlsym(lib, "sepSetOMP"), Cvoid, (Cint,), nthreads)
 
+end
+
+# Compress
+function Compress(desiredRho, xi)
+
+    ccall(dlsym(lib, "sepCompress"), Cvoid, (Cdouble, Cdouble), desiredRho, xi)
+    
 end
 
 end
