@@ -8,14 +8,14 @@ lib = dlopen(strpath)
 ## Init block
 function Init(xyzfile)
 
-    ccall(dlsym(lib, "sepInit"), Cvoid, (Cstring,), xyzfile)
+    ccall(dlsym(lib, "sepInit_1"), Cvoid, (Cstring,), xyzfile)
 
 end
 
-function (xyzfile)
+function Init(xyzfile, topfile)
 
-    ccall(dlsym(lib, "sepInit"), Cvoid, (Cstring,), xyzfile)
-
+    ccall(dlsym(lib, "sepInit_2"), Cvoid, (Cstring, Cstring), xyzfile, topfile)
+    
 end
 
 
@@ -37,16 +37,41 @@ function ForceLJ(types, params)
 
 end
 
-function RelaxTemp(type, desiredTemp, tau)
 
-    ccall(dlsym(lib, "sepRelaxTemp"), Cvoid, (Cchar, Cdouble, Cdouble), type, desiredTemp, tau)
+function ForceBondHarmonic(btype, blength, bconstant)
+
+    ccall(dlsym(lib, "sepBondHarmonic"), Cvoid, (Cint, Cdouble, Cdouble),
+          btype, blength, bconstant)
  
 end
+
+function ForceAngleCossq(atype, angle, aconstant)
+
+    ccall(dlsym(lib, "sepAngleCossq"), Cvoid, (Cint, Cdouble, Cdouble),
+          atype, angle, aconstant)
+ 
+end
+
+
+function ForceTorsion(ttype, params)
+
+    ccall(dlsym(lib, "sepForceTorsion"), Cvoid, (Cint, Ptr{Cdouble}), ttype, params)
+ 
+end
+
+
 
 function LeapFrog()
 
     ccall(dlsym(lib, "sepLeapFrog"), Cvoid, ())
 
+end
+
+
+function RelaxTemp(type, desiredTemp, tau)
+
+    ccall(dlsym(lib, "sepRelaxTemp"), Cvoid, (Cchar, Cdouble, Cdouble), type, desiredTemp, tau)
+ 
 end
 
 function Save(filename)
