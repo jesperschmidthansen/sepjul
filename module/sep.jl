@@ -59,7 +59,11 @@ function ForceTorsion(ttype, params)
  
 end
 
+function ForceCoulombSF(cutoff)
 
+    ccall(dlsym(lib, "sepForceCoulombSF"), Cvoid, (Cdouble,), cutoff)
+    
+end
 
 function LeapFrog()
 

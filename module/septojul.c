@@ -11,7 +11,7 @@ static int natoms=0;
 static double lbox[3]={0.0};
 static double dt=0.005;
 static double maxcf = 2.5;
-
+static int exclusionrule = SEP_ALL;
 
 static int initflag = false;
 static int initmol = false;
@@ -84,7 +84,7 @@ void sepReset(void){
 
 void sepForceLJ(char *types, double *params){
   
-  sep_force_lj(atoms, types, params, &sys, &ret, SEP_ALL);
+  sep_force_lj(atoms, types, params, &sys, &ret, exclusionrule);
 
 }
 
@@ -104,6 +104,12 @@ void sepForceTorsion(int type, double *param){
   
   sep_torsion_Ryckaert(atoms, type, param, &sys, &ret);
 
+}
+
+void sepForceCoulombSF(double cf){
+
+  sep_coulomb_sf(atoms, cf, &sys, &ret, exclusionrule);
+ 
 }
 
 void sepLeapFrog(void){
@@ -162,4 +168,17 @@ void sepRelaxTemp(char type, double Td, double tau){
   
   sep_relax_temp(atoms, type, Td, tau, &sys);
 
+}
+
+void sepSetExclusionRule(char *type){
+
+  if ( strcmp(type, "bond")==0 ) 
+    exclusionrule = SEP_EXCL_BONDED;
+  else if ( strcmp(type, "molecule")==0 )
+    exclusionrule = SEP_EXCL_SAME_MOL;
+  else if ( strcmp(type, "all")==0 )
+    exclusionrule = SEP_ALL;
+  else
+    printf("Exclusion rule not defined");
+  
 }
