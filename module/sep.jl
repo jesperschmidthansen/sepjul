@@ -5,7 +5,7 @@ using Libdl
 strpath="/home/jschmidt/software/sepjul/module/libseptojul.so"
 lib = dlopen(strpath)
 
-## Init block
+## Init and close/clear block
 function Init(xyzfile)
 
     ccall(dlsym(lib, "sepInit_1"), Cvoid, (Cstring,), xyzfile)
@@ -18,19 +18,20 @@ function Init(xyzfile, topfile)
     
 end
 
-
 function Close()
 
     ccall(dlsym(lib, "sepClear"), Cvoid, ())
 
 end
 
+# Reset forces and return structure
 function Reset()
 
     ccall(dlsym(lib, "sepReset"), Cvoid, ())
 
 end
 
+# Force functions
 function ForceLJ(types, params)
 
     ccall(dlsym(lib, "sepForceLJ"), Cvoid, (Cstring, Ptr{Cdouble}), types, params)
@@ -65,25 +66,28 @@ function ForceCoulombSF(cutoff)
     
 end
 
+# Integration
 function LeapFrog()
 
     ccall(dlsym(lib, "sepLeapFrog"), Cvoid, ())
 
 end
 
-
+# Thermostating methods
 function RelaxTemp(type, desiredTemp, tau)
 
     ccall(dlsym(lib, "sepRelaxTemp"), Cvoid, (Cchar, Cdouble, Cdouble), type, desiredTemp, tau)
  
 end
 
+# Save
 function Save(filename)
 
     ccall(dlsym(lib, "sepSave"), Cvoid, (Cstring,), filename)
 
 end
 
+# Get functions
 function GetEnergies()
 
     retval = zeros(2)
