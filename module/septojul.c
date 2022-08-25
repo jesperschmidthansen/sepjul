@@ -13,9 +13,9 @@ static double dt=0.005;
 static double maxcf = 2.5;
 static int exclusionrule = SEP_ALL;
 
-static int initflag = false;
-static int initmol = false;
-
+static bool initflag = false;
+static bool initmol = false;
+static bool initomp = false;
 
 void sepInit_1(char *xyzfile){
 
@@ -182,3 +182,18 @@ void sepSetExclusionRule(char *type){
     printf("Exclusion rule not defined");
   
 }
+
+void sepSetTypes(char *types){
+
+  for ( int n=0; n<natoms; n++ )  atoms[n].type = types[n];
+
+}
+
+void sepSetOMP(int nthreads){
+
+  sep_set_omp(nthreads, &sys);
+
+  initomp = true;
+}
+
+
