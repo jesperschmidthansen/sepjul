@@ -77,3 +77,42 @@ void sepGetEnergies(double *energies){
   energies[1] = ret.ekin;
 
 }
+
+int sepGetNumbParticles(){
+
+  return natoms;
+
+}
+
+void sepGetPositions(double *x, double *y, double *z){
+
+  for ( int n=0; n<natoms; n++ ){
+    x[n] = atoms[n].x[0];
+    y[n] = atoms[n].x[1];
+    z[n] = atoms[n].x[2];
+  }
+
+}
+
+
+void sepGetMasses(double *m){
+
+  for ( int n=0; n<natoms; n++ ){
+    m[n] = atoms[n].m;
+  }
+
+}
+
+
+void sepGetCharges(double *z){
+
+  for ( int n=0; n<natoms; n++ ){
+    z[n] = atoms[n].z;
+  }
+
+}
+void sepRelaxTemp(char type, double Td, double tau){
+  
+  sep_relax_temp(atoms, type, Td, tau, &sys);
+
+}
