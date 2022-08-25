@@ -5,12 +5,19 @@ using Libdl
 strpath="/home/jschmidt/software/sepjul/module/libseptojul.so"
 lib = dlopen(strpath)
 
-
+## Init block
 function Init(xyzfile)
 
     ccall(dlsym(lib, "sepInit"), Cvoid, (Cstring,), xyzfile)
 
 end
+
+function (xyzfile)
+
+    ccall(dlsym(lib, "sepInit"), Cvoid, (Cstring,), xyzfile)
+
+end
+
 
 function Close()
 
