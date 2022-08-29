@@ -5,14 +5,15 @@ using Libdl
 strpath="/home/jschmidt/software/sepjul/module/libseptojul.so"
 lib = dlopen(strpath)
 
+
 ## Init and close/clear block
-function Init(xyzfile)
+function Init(xyzfile::String)
 
     ccall(dlsym(lib, "sepInit_1"), Cvoid, (Cstring,), xyzfile)
 
 end
 
-function Init(xyzfile, topfile)
+function Init(xyzfile::String, topfile::String)
 
     ccall(dlsym(lib, "sepInit_2"), Cvoid, (Cstring, Cstring), xyzfile, topfile)
     
@@ -32,21 +33,21 @@ function Reset()
 end
 
 # Force functions
-function ForceLJ(types, params)
+function ForceLJ(types::String, params)
 
     ccall(dlsym(lib, "sepForceLJ"), Cvoid, (Cstring, Ptr{Cdouble}), types, params)
 
 end
 
 
-function ForceBondHarmonic(btype, blength, bconstant)
+function ForceBondHarmonic(btype::Int, blength::Float64, bconstant::Float64)
 
     ccall(dlsym(lib, "sepForceBondHarmonic"), Cvoid, (Cint, Cdouble, Cdouble),
           btype, blength, bconstant)
  
 end
 
-function ForceAngleCossq(atype, angle, aconstant)
+function ForceAngleCossq(atype::Int, angle::Float64, aconstant::Float64)
 
     ccall(dlsym(lib, "sepAngleCossq"), Cvoid, (Cint, Cdouble, Cdouble),
           atype, angle, aconstant)
@@ -54,13 +55,13 @@ function ForceAngleCossq(atype, angle, aconstant)
 end
 
 
-function ForceTorsion(ttype, params)
+function ForceTorsion(ttype::Int, params)
 
     ccall(dlsym(lib, "sepForceTorsion"), Cvoid, (Cint, Ptr{Cdouble}), ttype, params)
  
 end
 
-function ForceCoulombSF(cutoff)
+function ForceCoulombSF(cutoff::Float64)
 
     ccall(dlsym(lib, "sepForceCoulombSF"), Cvoid, (Cdouble,), cutoff)
     
@@ -74,14 +75,14 @@ function LeapFrog()
 end
 
 # Thermostating methods
-function RelaxTemp(type, desiredTemp, tau)
+function RelaxTemp(type::Char, desiredTemp::Float64, tau::Float64)
 
     ccall(dlsym(lib, "sepRelaxTemp"), Cvoid, (Cchar, Cdouble, Cdouble), type, desiredTemp, tau)
  
 end
 
 # Save
-function Save(filename, types)
+function Save(filename::String, types::String)
 
     ccall(dlsym(lib, "sepSave"), Cvoid, (Cstring, Cstring), filename, types)
 
@@ -162,7 +163,7 @@ end
 
 #Set functions
 
-function SetTypes(types)
+function SetTypes(types::String)
 
     npart = ccall(dlsym(lib, "sepGetNumbParticles"), Cint, ())
 
@@ -174,23 +175,24 @@ function SetTypes(types)
     
 end
 
-function SetExclusionRule(rule)
+function SetExclusionRule(rule::String)
 
     ccall(dlsym(lib, "sepSetExclusionRule"), Cvoid, (Ptr{Cchar},), rule)
     
 end
 
-function SetOMP(nthreads)
+function SetOMP(nthreads::Int)
 
     ccall(dlsym(lib, "sepSetOMP"), Cvoid, (Cint,), nthreads)
 
 end
 
 # Compress
-function Compress(desiredRho, xi)
+function Compress(desiredRho::Float64, xi::Float64)
 
     ccall(dlsym(lib, "sepCompress"), Cvoid, (Cdouble, Cdouble), desiredRho, xi)
     
 end
 
-end
+
+end # Module
