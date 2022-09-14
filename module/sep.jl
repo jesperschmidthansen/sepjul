@@ -49,7 +49,7 @@ end
 
 function ForceAngleCossq(atype::Int, angle::Float64, aconstant::Float64)
 
-    ccall(dlsym(lib, "sepAngleCossq"), Cvoid, (Cint, Cdouble, Cdouble),
+    ccall(dlsym(lib, "sepForceAngleCossq"), Cvoid, (Cint, Cdouble, Cdouble),
           atype, angle, aconstant)
  
 end
@@ -68,7 +68,7 @@ function ForceCoulombSF(cutoff::Float64)
 end
 
 # Integration
-function LeapFrog()
+function Leapfrog()
 
     ccall(dlsym(lib, "sepLeapFrog"), Cvoid, ())
 

@@ -164,6 +164,7 @@ void sepGetCharges(double *z){
   }
 
 }
+
 void sepRelaxTemp(char type, double Td, double tau){
   
   sep_relax_temp(atoms, type, Td, tau, &sys);
