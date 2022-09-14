@@ -67,6 +67,7 @@ void sepClear(void){
   sep_free_sys(&sys);
   sep_close(atoms, natoms);
 
+  initflag = false;
 }
 
 void sepReset(void){
