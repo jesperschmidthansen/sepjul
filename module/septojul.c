@@ -58,13 +58,18 @@ void sepInit_2(char *xyzfile, char *topfile){
 void sepClear(void){
 
   if ( !initflag ){
-    printf("Seplib not initialized");
+    printf("seplib not initialized");
     return;
   }
 
   if ( initmol ){
     sep_free_mol(mols, &sys);
     initmol = false;
+  }
+
+  if ( initsampler ){
+    sep_close_sampler(&sampler);
+    initsampler = false;
   }
   
   sep_free_sys(&sys);
@@ -127,6 +132,18 @@ void sepSave(char *xyzfile, char *types){
   sep_save_xyz(atoms, types, xyzfile, "w", sys);
 
 }
+
+void sepGetAtomicPressure(double *press){
+
+  sep_pressure_tensor(&ret, &sys);
+
+  press[0] = ret.p;
+  press[1] = ret.P[0][1];
+  press[2] = ret.P[0][2];
+  press[3] = ret.P[1][2];
+
+}
+  
 
 void sepGetEnergies(double *energies){
 
@@ -229,8 +246,17 @@ void sepAddSamplerVACF(int lvec, double samplespan){
     sepInitSampler();
   
   sep_add_sampler(&sampler, "vacf", sys, lvec, samplespan);
+     
+}
+
+void sepAddSamplerSACF(int lvec, double samplespan){
+
+  if ( !initsampler )
+    sepInitSampler();
+  
+  sep_add_sampler(&sampler, "sacf", sys, lvec, samplespan);
   
    
 }
-  
+
   

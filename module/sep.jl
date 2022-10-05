@@ -23,6 +23,7 @@ function Close()
 
     ccall(dlsym(lib, "sepClear"), Cvoid, ())
 
+    
 end
 
 # Reset forces and return structure
@@ -138,6 +139,15 @@ function GetVelocities()
 end
 
 
+function GetAtomicPressure()
+
+    pressTensor = zeros(4)
+    
+    ccall(dlsym(lib, "sepGetAtmicPressure"), Cvoid, (Ptr{Cdouble},), pressTensor)
+
+    return pressTensor
+end
+
 function GetMasses()
 
     npart = ccall(dlsym(lib, "sepGetNumbParticles"), Cint, ())
@@ -160,6 +170,7 @@ function GetCharges()
     
     return z
 end
+
 
 #Set functions
 
@@ -201,15 +212,15 @@ function InitSampler()
 
 end
 
-function CloseSampler()
-    
-    ccall(dlsym(lib, "sepCloseSampler"), Cvoid, ())
-
-end 
-
 function AddSamplerVACF(lvec::Int64, tspan::Float64)
     
    ccall(dlsym(lib,"sepAddSamplerVACF"), Cvoid, (Cint, Cdouble), lvec, tspan)
+
+end
+
+function AddSamplerSACF(lvec::Int64, tspan::Float64)
+    
+   ccall(dlsym(lib,"sepAddSamplerSACF"), Cvoid, (Cint, Cdouble), lvec, tspan)
 
 end
 
