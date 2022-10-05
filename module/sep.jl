@@ -194,5 +194,23 @@ function Compress(desiredRho::Float64, xi::Float64)
     
 end
 
+#Sample
+function InitSampler()
+ 
+    ccall(dlsym(lib, "sepInitSampler"), Cvoid, ())
 
-end # Module
+end
+
+function CloseSampler()
+    
+    ccall(dlsym(lib, "sepCloseSampler"), Cvoid, ())
+
+end 
+
+function AddSamplerVACF(lvec::Int64, tspan::Float64)
+    
+   ccall(dlsym(lib,"sepAddSamplerVACF"), Cvoid, (Cint, Cdouble), lvec, tspan)
+
+end
+
+end #Module

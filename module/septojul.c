@@ -6,6 +6,7 @@ static sepatom *atoms;
 static sepsys sys;
 static sepret ret;
 static sepmol *mols;
+static sepsampler sampler;
 
 static int natoms=0;
 static double lbox[3]={0.0};
@@ -16,6 +17,8 @@ static int exclusionrule = SEP_ALL;
 static bool initflag = false;
 static bool initmol = false;
 static bool initomp = false;
+static bool initsampler = false;
+
 
 void sepInit_1(char *xyzfile){
 
@@ -204,3 +207,30 @@ void sepCompress(double desiredRho, double xi){
   sep_compress_box(atoms, desiredRho, xi, &sys);
   
 }
+
+void sepInitSampler(void){
+  
+  sampler = sep_init_sampler();
+
+  initsampler = true;
+
+}
+
+void sepCloseSampler(void){
+
+  if ( initsampler )
+    sep_close_sampler(&sampler);
+
+}
+
+void sepAddSamplerVACF(int lvec, double samplespan){
+
+  if ( !initsampler )
+    sepInitSampler();
+  
+  sep_add_sampler(&sampler, "vacf", sys, lvec, samplespan);
+  
+   
+}
+  
+  
