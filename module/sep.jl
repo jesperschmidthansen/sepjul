@@ -143,7 +143,7 @@ function GetAtomicPressure()
 
     pressTensor = zeros(4)
     
-    ccall(dlsym(lib, "sepGetAtmicPressure"), Cvoid, (Ptr{Cdouble},), pressTensor)
+    ccall(dlsym(lib, "sepGetAtomicPressure"), Cvoid, (Ptr{Cdouble},), pressTensor)
 
     return pressTensor
 end
@@ -206,12 +206,14 @@ function Compress(desiredRho::Float64, xi::Float64)
 end
 
 #Sample
-function InitSampler()
- 
-    ccall(dlsym(lib, "sepInitSampler"), Cvoid, ())
 
+function Sample()
+
+    ccall(dlsym(lib, "sepSample"), Cvoid, ())
+          
 end
 
+    
 function AddSamplerVACF(lvec::Int64, tspan::Float64)
     
    ccall(dlsym(lib,"sepAddSamplerVACF"), Cvoid, (Cint, Cdouble), lvec, tspan)
@@ -223,5 +225,12 @@ function AddSamplerSACF(lvec::Int64, tspan::Float64)
    ccall(dlsym(lib,"sepAddSamplerSACF"), Cvoid, (Cint, Cdouble), lvec, tspan)
 
 end
+
+function AddSamplerRDF(lvec::Int64, samplefreq::Int64, types::String)
+
+    ccall(dlsym(lib,"sepAddSamplerRDF"), Cvoid, (Cint, Cint, Ptr{Cchar}), lvec, samplefreq, types)
+    
+end
+
 
 end #Module

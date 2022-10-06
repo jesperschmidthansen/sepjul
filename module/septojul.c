@@ -19,6 +19,7 @@ static bool initmol = false;
 static bool initomp = false;
 static bool initsampler = false;
 
+static unsigned iterationNumber=0;
 
 void sepInit_1(char *xyzfile){
 
@@ -125,6 +126,7 @@ void sepLeapFrog(void){
 
   sep_leapfrog(atoms, &sys, &ret);
 
+  iterationNumber ++;
 }
 
 void sepSave(char *xyzfile, char *types){
@@ -259,4 +261,18 @@ void sepAddSamplerSACF(int lvec, double samplespan){
    
 }
 
+void sepAddSamplerRDF(int lvec, int samplefreq, char *types){
+
+  if ( !initsampler )
+    sepInitSampler();
+  
+  sep_add_sampler(&sampler, "radial", sys, lvec, samplefreq, types);
+     
+}
+
+void sepSample(void) {
+
+  sep_sample(atoms, &sampler, &ret, sys, iterationNumber-1);
+ 
+}
   
