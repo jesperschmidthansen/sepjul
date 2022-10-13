@@ -7,6 +7,7 @@ lib = dlopen(strpath)
 
 
 ## Init and close/clear block
+" Init is an init function"
 function Init(xyzfile::String)
 
     ccall(dlsym(lib, "sepInit_1"), Cvoid, (Cstring,), xyzfile)
@@ -17,6 +18,18 @@ function Init(xyzfile::String, topfile::String)
 
     ccall(dlsym(lib, "sepInit_2"), Cvoid, (Cstring, Cstring), xyzfile, topfile)
     
+end
+
+function SetLatticeFromX0()
+
+    ccall(dlsym(lib, "sepSetx0"), Cvoid, ())
+
+end
+
+function SetTimeStep(dt::Float64)
+
+    ccall(dlsym(lib, "sepSetTimeStep"), Cvoid, (Cdouble,), dt)
+
 end
 
 function Close()
@@ -66,6 +79,12 @@ function ForceCoulombSF(cutoff::Float64)
 
     ccall(dlsym(lib, "sepForceCoulombSF"), Cvoid, (Cdouble,), cutoff)
     
+end
+
+function ForceX0(atype::Char)
+
+    ccall(dlsym(lib, "sepForceX0"), Cvoid, (Cchar,), atype)
+   
 end
 
 # Integration
@@ -232,5 +251,11 @@ function AddSamplerRDF(lvec::Int64, samplefreq::Int64, types::String)
     
 end
 
+function AddSamplerHydrodynProfile(lvec::Int64, samplefreq::Int64, types::Char)
+
+    
+     ccall(dlsym(lib, "sepAddSamplerProfiler"), Cvoid, (Cint, Cchar, Cint), lvec, types, samplefreq)
+   
+end
 
 end #Module

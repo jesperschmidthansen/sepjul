@@ -55,6 +55,20 @@ void sepInit_2(char *xyzfile, char *topfile){
 }
 
 
+void sepSetx0(void){
+
+  if ( !initflag ){
+    printf("Error: You must initialize the system before setting x0");
+    return;
+  } 
+  
+  sep_set_x0(atoms, sys.npart);
+}
+
+void sepSetTimeStep(double newdt){
+
+  dt = newdt;
+}
 
 void sepClear(void){
 
@@ -120,6 +134,12 @@ void sepForceCoulombSF(double cf){
 
   sep_coulomb_sf(atoms, cf, &sys, &ret, exclusionrule);
  
+}
+
+void sepForceX0(char type){
+
+  sep_force_x0(atoms, type, sep_spring_x0, &sys);
+
 }
 
 void sepLeapFrog(void){
@@ -267,6 +287,15 @@ void sepAddSamplerRDF(int lvec, int samplefreq, char *types){
     sepInitSampler();
   
   sep_add_sampler(&sampler, "radial", sys, lvec, samplefreq, types);
+     
+}
+
+void sepAddSamplerProfiler(int lvec, char type, int samplefreq){
+
+  if ( !initsampler )
+    sepInitSampler();
+  
+  sep_add_sampler(&sampler, "profs", sys, lvec, type, samplefreq);
      
 }
 
