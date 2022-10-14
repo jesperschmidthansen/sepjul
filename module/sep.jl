@@ -1,5 +1,6 @@
 module sep
 
+
 using Libdl
 
 strpath="/home/jschmidt/software/sepjul/module/libseptojul.so"
@@ -254,7 +255,8 @@ end
 function AddSamplerHydrodynProfile(lvec::Int64, samplefreq::Int64, types::Char)
 
     
-     ccall(dlsym(lib, "sepAddSamplerProfiler"), Cvoid, (Cint, Cchar, Cint), lvec, types, samplefreq)
+    ccall(dlsym(lib, "sepAddSamplerProfiler"), Cvoid, (Cint, Cchar, Cint),
+          lvec, types, samplefreq)
    
 end
 
